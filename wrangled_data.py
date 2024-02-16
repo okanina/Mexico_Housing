@@ -39,16 +39,17 @@ def wrangle_df3(filepath):
     
     # dropping duplicate columns
     df3.drop(columns=["lat-lon","place_with_parent_names","Unnamed: 0"], inplace=True)
+ 
+    #changing the index of columns.
+    df3=df3.reindex(columns=['property_type', 'state', 'lat', 'lon', 'area_m2','price_usd'])
     
     return df3    
 
 def main():
         
     frames=[wrangle_df1("data\mexico-real-estate-1.xlsx"), wrangle_df2("data\mexico-real-estate-2.xlsx"), wrangle_df3("data\mexico-real-estate-3.xlsx")]
-    
-    pd.set_option("display.max_columns", None)
-    
-    df=pd.concat(frames) 
+         
+    df=pd.concat(frames, ignore_index=True).drop_duplicates()
 
     df.dropna(inplace=True)     
            
